@@ -1,0 +1,19 @@
+# Reference web app (separate repository: dune-ai-test/zone)
+/zone/
+
+# Gradle / Android build output
+.gradle/
+build/
+*/build/
+local.properties
+*.apk
+*.aab
+*.iml
+.idea/
+.externalNativeBuild/
+.cxx/
+captures/
+
+# OS
+.DS_Store
+Thumbs.db

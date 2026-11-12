@@ -1,0 +1,59 @@
+name: Build & release (debug APK)
+
+# Builds the Zone Android app in CI and publishes the debug APK
+# directly to a GitHub pre-release. No artifacts, no local build.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write # required to create releases and upload assets
+
+jobs:
+  build-and-release:
+    name: Assemble debug APK & publish pre-release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install Android SDK components
+        run: |
+          (yes || true) | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Assemble debug APK
+        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Publish debug APK to pre-release
+        id: release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}-pre
+          name: Zone v1.0.${{ github.run_number }}-pre (debug)
+          body: |
+            Automated **debug** build of Zone for Android, built entirely in GitHub Actions.
+
+            - Commit: `${{ github.sha }}`
+            - Built with: Jetpack Compose + Kotlin
+            - This APK is signed with the Android debug key — for sideloading and testing only.
+            - **Not** a Play Store build; expect the `debug` signature.
+
+            Download `app-debug.apk` from the assets below and install it on Android 8.0+.
+          prerelease: true
+          files: app/build/outputs/apk/debug/app-debug.apk
+          fail_on_unmatched_files: true
