@@ -56,6 +56,7 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowDownward
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.DeleteOutline
 import androidx.compose.material.icons.rounded.Share
@@ -158,7 +159,7 @@ fun ListDetailScreen(listId: String, onBack: () -> Unit) {
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(
-                    androidx.compose.material.icons.Icons.Rounded.ChevronLeft,
+                    Icons.Rounded.ChevronLeft,
                     contentDescription = "Back to lists",
                     tint = palette.accent
                 )

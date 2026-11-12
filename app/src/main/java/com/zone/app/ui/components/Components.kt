@@ -14,12 +14,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyColumnScope
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -50,7 +52,7 @@ fun ZoneScreen(
     subtitle: String? = null,
     actions: (@Composable () -> Unit)? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
-    content: LazyColumnScope.() -> Unit
+    content: LazyListScope.() -> Unit
 ) {
     val palette = zonePalette()
     LazyColumn(
@@ -381,7 +383,7 @@ fun RoundAddButton(onClick: () -> Unit, contentDescription: String = "Add") {
             .background(palette.accent)
     ) {
         Icon(
-            androidx.compose.material.icons.Icons.Rounded.Add,
+            Icons.Rounded.Add,
             contentDescription = contentDescription,
             tint = Color.White
         )

@@ -106,7 +106,7 @@ fun LinksScreen() {
     }
 
     // Spotlight: explicit pick, else newest favourite, else newest.
-    val spotlight = spotlightId?.let { id -> links.firstOrNull { it.id == id } }
+    val spotlight: LinkItem? = spotlightId?.let { id -> links.firstOrNull { it.id == id } }
         ?: links.filter { it.favorite }.maxByOrNull { it.saved }
         ?: links.maxByOrNull { it.saved }
 

@@ -21,7 +21,8 @@ import java.util.UUID
  */
 object ZoneStore {
 
-    private val json = Json {
+    @PublishedApi
+    internal val json = Json {
         ignoreUnknownKeys = true
         encodeDefaults = true
         isLenient = true
@@ -187,22 +188,23 @@ object ZoneStore {
     }
 
     /** Record counts per tool, for the admin register. */
+    inline fun <reified T> countTyped(key: String): Int = readTyped<List<T>>(key, emptyList()).size
+
     fun recordCounts(): List<Pair<String, Int>> {
-        inline fun <reified T> count(key: String): Int = readTyped<List<T>>(key, emptyList()).size
         val money = readTyped(KEY_MONEY, MoneyData())
         val passbook = readTyped(KEY_PASSBOOK, PassbookData())
         return listOf(
-            "Diary" to count<DiaryEntry>(KEY_DIARY),
-            "Lists" to count<ZoneList>(KEY_LISTS),
-            "Habits" to count<Habit>(KEY_HABITS),
-            "Notes" to count<Note>(KEY_NOTES),
+            "Diary" to countTyped<DiaryEntry>(KEY_DIARY),
+            "Lists" to countTyped<ZoneList>(KEY_LISTS),
+            "Habits" to countTyped<Habit>(KEY_HABITS),
+            "Notes" to countTyped<Note>(KEY_NOTES),
             "Money" to money.transactions.size,
             "Passbook" to passbook.transactions.size,
-            "Split" to count<SplitGroup>(KEY_SPLIT),
-            "Mileage" to count<Fill>(KEY_TRIPS),
-            "Watchlist" to count<WatchItem>(KEY_WATCHLIST),
-            "Links" to count<LinkItem>(KEY_LINKS),
-            "Subscriptions" to count<Subscription>(KEY_SUBSCRIPTIONS)
+            "Split" to countTyped<SplitGroup>(KEY_SPLIT),
+            "Mileage" to countTyped<Fill>(KEY_TRIPS),
+            "Watchlist" to countTyped<WatchItem>(KEY_WATCHLIST),
+            "Links" to countTyped<LinkItem>(KEY_LINKS),
+            "Subscriptions" to countTyped<Subscription>(KEY_SUBSCRIPTIONS)
         )
     }
 
